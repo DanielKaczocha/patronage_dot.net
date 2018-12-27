@@ -110,17 +110,12 @@ class Program
             short i = Convert.ToInt16(Console.ReadLine());
             if (i < 0 || i > 5)
             {
-
                 Console.WriteLine("\nLiczba poza zakresem.\nSprobuj jeszcz raz.");
                 Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
 
                 Console.ReadKey();
 
                 DeepDive();
-
-
-
-
             }
             string path = Directory.GetCurrentDirectory();
 
@@ -145,13 +140,14 @@ class Program
             
             Directory.Delete(path, recursive: true);
             
-
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("Skasowanno folder: ");
             Console.WriteLine(path);
             Console.ResetColor();
 
             Console.ForegroundColor = ConsoleColor.Green;
+            path = Directory.GetCurrentDirectory();
+
             RecDeepDive(ref i, ref path);
             Console.ResetColor();
             Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
@@ -174,13 +170,15 @@ class Program
             Console.ReadKey();
         }
 
-        void RecDeepDive(ref short i, ref string path)
+        void RecDeepDive(ref short i, ref string path) //Importal//////////////////////////////////////////////////////////////////////////////////////////////
         {
             if (i > 0)
             {
-
+                
                 DirectoryInfo directory = new DirectoryInfo(path);
                 Guid guid = Guid.NewGuid();
+                
+
 
                 directory.CreateSubdirectory(guid.ToString());
                 path += ("\\" + guid.ToString());
@@ -238,17 +236,17 @@ class Program
                     Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
                     Console.ReadKey();
 
-                    Start();
+                    
                 }
 
-                DrownItDown();
+                Start();
                 
             }
             else
             {
 
-                File.Create(filepath);
-                File.Open(filepath, FileMode.Open, FileAccess.Write, FileShare.Read);
+                File.Create(filepath).Dispose();
+                
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Utworzono plik:\n" + filepath);
                 Console.ResetColor();
@@ -305,11 +303,15 @@ class Program
 
             Console.Write(ex.Message);
             Console.WriteLine("\nSprobuj jeszcze raz.");
+            Console.WriteLine("Nacisnij dowolny przycisk, aby kontynuowac.");
+
+            Console.ReadKey();
+            DrownItDown();
         }
 
 
 
-        void RecDrownITDown(ref short i, ref string path)
+        void RecDrownITDown(ref short i, ref string path) //Importal//////////////////////////////////////////////////////////////////////////////////////////////
         {
             if (i > 0)
             {
