@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Security.AccessControl;
-
+using System.Linq;
 
 class Program
 {
@@ -122,16 +121,25 @@ class Program
             try
             {
                 string[] dirs = new string[1];
+                
                 dirs = Directory.GetDirectories(path);
+
+                Guid testerGuid;
+                if (!Guid.TryParse(dirs[0].Split(Path.DirectorySeparatorChar).Last(), out testerGuid))
+                    throw new IndexOutOfRangeException();
+
                 path = dirs[0];
                 
             }
             catch (IndexOutOfRangeException)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
 
                 RecDeepDive(ref i, ref path);
-                Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+                Console.ResetColor();
 
+                Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+                
                 Console.ReadKey();
                 Start();
             }
@@ -170,6 +178,8 @@ class Program
             Console.ReadKey();
         }
 
+       
+
         void RecDeepDive(ref short i, ref string path) //Importal//////////////////////////////////////////////////////////////////////////////////////////////
         {
             if (i > 0)
@@ -181,7 +191,7 @@ class Program
 
 
                 directory.CreateSubdirectory(guid.ToString());
-                path += ("\\" + guid.ToString());
+                path = Path.Combine(path, guid.ToString());
 
                 i--;
 
@@ -216,7 +226,7 @@ class Program
             RecDrownITDown(ref i, ref path);
 
 
-            string filepath = path + "\\Plik.txt";
+            string filepath = Path.Combine(path, "Plik.txt");
 
             if (File.Exists(filepath))
             {
@@ -317,6 +327,10 @@ class Program
             {
                 string[] dirs = new string[1];
                 dirs = Directory.GetDirectories(path);
+
+                Guid testerGuid;
+                if (!Guid.TryParse(dirs[0].Split(Path.DirectorySeparatorChar).Last(), out testerGuid))
+                    throw new IndexOutOfRangeException();
 
                 path = dirs[0];
 
