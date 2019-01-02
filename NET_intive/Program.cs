@@ -21,22 +21,52 @@ class Program
         Console.WriteLine("\n[4] - Exit.\n\n");
         Console.ResetColor();
 
-        short choseApp = short.Parse(Console.ReadLine());
-
-        switch(choseApp)
+        try
         {
-            case 1:
-                FizzBuzz();
-                break;
-            case 2:
-                DeepDive();
-                break;
-            case 3:
-                DrownItDown();
-                break;
-            default :
-                Exit();
-                break;
+            short choseApp = short.Parse(Console.ReadLine());
+
+            switch (choseApp)
+            {
+                case 1:
+                    FizzBuzz();
+                    break;
+                case 2:
+                    DeepDive();
+                    break;
+                case 3:
+                    DrownItDown();
+                    break;
+                case 4:
+                    Exit();
+                    break;
+                default:
+                    throw new OverflowException();
+                    
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine("\nNie podano liczby\n");
+            Console.WriteLine("\nSprobuj jeszcze raz");
+            Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+
+            Console.ReadKey();
+            Start();
+        }
+        catch(OverflowException)
+        {
+            Console.WriteLine("\nPodaj liczbe od 1 do 4.\n");
+            Console.WriteLine("\nSprobuj jeszcze raz");
+            Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+
+            Console.ReadKey();
+            Start();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Blad: ");
+            Console.Write(ex.Message);
+            Exit();
         }
          
     }
@@ -53,14 +83,7 @@ class Program
             short number = Convert.ToInt16(Console.ReadLine());
 
             if (number < 0 || number > 1000)
-            {
-
-                Console.WriteLine("\nLiczba poza zakresem. Zakres jest od 0 do 1000\nSprobuj jeszcz raz.");
-                Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
-                Console.ReadKey();
-
-                FizzBuzz();
-            }
+                throw new OverflowException();
 
             if (number % 2 == 0)
                 FizzBuzzString = "Fizz";
@@ -85,6 +108,14 @@ class Program
             Start();
 
         }
+        catch (OverflowException)
+        {
+            Console.WriteLine("\nLiczba poza zakresem. Zakres jest od 0 do 1000\nSprobuj jeszcz raz.");
+            Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+            Console.ReadKey();
+
+            FizzBuzz();
+        }
         catch (FormatException)
         {
             Console.WriteLine("Nie podano liczby. Sprobuj jeszce raz.");
@@ -95,7 +126,9 @@ class Program
         }
         catch (Exception ex)
         {
-            Console.WriteLine(ex.Message);
+            Console.WriteLine("Blad: ");
+            Console.Write(ex.Message);
+            Exit();
         }
     }
 
@@ -108,14 +141,8 @@ class Program
         {
             short i = Convert.ToInt16(Console.ReadLine());
             if (i < 0 || i > 5)
-            {
-                Console.WriteLine("\nLiczba poza zakresem.\nSprobuj jeszcz raz.");
-                Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+                throw new OverflowException();
 
-                Console.ReadKey();
-
-                DeepDive();
-            }
             string path = Directory.GetCurrentDirectory();
 
             try
@@ -166,16 +193,29 @@ class Program
 
 
         }
+        catch (OverflowException)
+        {
+            Console.WriteLine("\nLiczba poza zakresem.\nZakres od 0 do 5.\nSprobuj jeszcz raz.");
+            Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+
+            Console.ReadKey();
+
+            DeepDive();
+        }
+        catch(FormatException)
+        {
+            Console.WriteLine("\nNie podano liczby. \nSprobuj jeszcze raz");
+
+            Console.ReadKey();
+            DeepDive();
+        }
 
         catch (Exception ex)
         {
 
             Console.WriteLine("Blad: ");
-
             Console.Write(ex.Message);
-            Console.WriteLine("\nSprobuj jeszcze raz.");
-            Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
-            Console.ReadKey();
+            Exit();
         }
 
        
@@ -214,13 +254,7 @@ class Program
 
             short i = Convert.ToInt16(Console.ReadLine());
             if (i < 0 || i > 5)
-            {
-                Console.WriteLine("Liczba poza zakresem.\nZakres od 0 do 5");
-                Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
-                Console.ReadKey();
-                DrownItDown();
-            }
-
+                throw new OverflowException();
 
             string path = Directory.GetCurrentDirectory();
             RecDrownITDown(ref i, ref path);
@@ -268,9 +302,16 @@ class Program
 
 
         }
+        catch (OverflowException)
+        {
+            Console.WriteLine("Liczba poza zakresem.\nZakres od 0 do 5");
+            Console.WriteLine("\nNacisnij dowolny przycisk, aby kontynuowac.");
+            Console.ReadKey();
+            DrownItDown();
+        }
         catch (FormatException)
         {
-            Console.WriteLine("Nie podano liczby. Sprobuj jeszce raz.");
+            Console.WriteLine("Nie podano liczby. \nSprobuj jeszce raz.");
             Console.ReadKey();
             DrownItDown();
         }
@@ -310,13 +351,8 @@ class Program
         {
 
             Console.WriteLine("Blad: ");
-
             Console.Write(ex.Message);
-            Console.WriteLine("\nSprobuj jeszcze raz.");
-            Console.WriteLine("Nacisnij dowolny przycisk, aby kontynuowac.");
-
-            Console.ReadKey();
-            DrownItDown();
+            Exit();
         }
 
 
